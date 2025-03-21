@@ -7,6 +7,10 @@ body {
   font-family: var(--font-league-spartan), sans-serif;
 }
 
+* {
+  @apply transition-colors duration-200;
+}
+
 @theme {
   --breakpoint-md: 48rem;
   --breakpoint-lg: 60rem;

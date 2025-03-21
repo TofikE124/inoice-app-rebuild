@@ -34,6 +34,18 @@
   letter-spacing: -0.25px;
 }
 
+.heading-l,
+.heading-m,
+.heading-s,
+.heading-s-variant {
+  font-weight: 700;
+}
+
+.body,
+.body-variant {
+  font-weight: 500;
+}
+
 @media (max-width: theme("screens.md")) {
   .heading-l {
     font-size: 1.5rem; /* 24px */
