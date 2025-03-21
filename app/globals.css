@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "./styles/base/typography.css";
 
 body {
@@ -9,15 +11,18 @@ body {
   --breakpoint-md: 48rem;
   --breakpoint-lg: 60rem;
 
+  --color-frost-white: #f9fafe;
   --color-deep-purple: #7c5dfa;
   --color-soft-purple: #9277ff;
   --color-slate-navy: #1e2139;
+  --color-charcoal-slate: #373b53;
   --color-midnight-slate: #252945;
   --color-pale-lavender: #dfe3fa;
   --color-cool-gray: #888eb0;
   --color-steel-blue: #7e88c3;
   --color-rich-black: #0c0e16;
   --color-vibrant-red: #ec5757;
+  --color-soft-red: #ff9797;
   --color-pale-ghost: #f8f8fb;
   --color-deep-space: #141625;
 }
