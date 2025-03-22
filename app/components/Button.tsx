@@ -3,14 +3,7 @@ import React, { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
 const buttonStyles = cva(
-  [
-    "px-6",
-    "py-4",
-    "rounded-3xl",
-    "transition-colors",
-    "heading-s",
-    "duration-200",
-  ],
+  ["px-6", "py-4", "rounded-3xl", "dark-transition", "heading-s"],
   {
     variants: {
       variant: {},

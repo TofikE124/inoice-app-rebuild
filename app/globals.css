@@ -7,8 +7,19 @@ body {
   font-family: var(--font-league-spartan), sans-serif;
 }
 
-* {
-  @apply transition-colors duration-200;
+@layer utilities {
+  .dark-transition {
+    @apply transition-colors  duration-200;
+  }
+}
+
+body,
+p,
+h1,
+h2,
+h3,
+h4 {
+  @apply transition-colors  duration-200;
 }
 
 @theme {
