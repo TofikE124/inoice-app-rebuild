@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Invoice {
+  id                 String       @id @default(uuid())
+  billFromId         String       @unique
+  billFrom           Location     @relation("BillFrom", fields: [billFromId], references: [id])
+  billToId           String       @unique
+  billTo             Location     @relation("BillTo", fields: [billToId], references: [id])
+  invoiceDate        DateTime
+  paymentTerms       PaymentTerms
+  projectDescription String       @db.Text
+  items              Item[]
+  status             Status
+}
+
+model Location {
+  id           String  @id @default(uuid())
+  name         String?
+  email        String?
+  streetAdress String
+  city         String
+  postCode     String
+  country      String
+
+  invoiceFrom Invoice? @relation("BillFrom")
+  invoiceTo   Invoice? @relation("BillTo")
+}
+
+model Item {
+  id        String  @id @default(uuid())
+  name      String
+  quantity  Int
+  price     Float
+  invoiceId String  @unique
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+}
+
+enum PaymentTerms {
+  NET_1_DAY
+  NET_7_DAYS
+  NET_14_DAYS
+  NET_30_DAY
+}
+
+enum Status {
+  PAID
+  PENDING
+  DRAFT
+}
