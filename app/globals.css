@@ -11,6 +11,10 @@ body {
   .dark-transition {
     @apply transition-colors  duration-200;
   }
+
+  .shadow-primary {
+    @apply shadow-[0px_10px_20px_0px] shadow-[#48549f40] dark:shadow-[#00000040];
+  }
 }
 
 body,
