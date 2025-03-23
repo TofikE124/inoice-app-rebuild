@@ -11,7 +11,7 @@ import {
 } from "date-fns";
 import Image from "next/image";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import DatepickerIcon from "../../public/icons/datepicker.svg";
+import DatepickerIcon from "../../public/assets/datepicker.svg";
 import useClickOutside from "../hooks/useClickOutside";
 import IconArrowLeft from "../svgs/IconArrowLeft";
 import IconArrowRight from "../svgs/IconArrowRight";

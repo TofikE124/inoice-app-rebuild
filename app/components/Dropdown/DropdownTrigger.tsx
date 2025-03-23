@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { useDropdown } from "./useDropdown";
+import CheveronIcon from "/assets/chevron.svg";
 
 type DropdownTriggerProps = {
   placeholder: string;
@@ -25,12 +26,7 @@ const DropdownTrigger = ({ placeholder }: DropdownTriggerProps) => {
             open ? "rotate-180" : "rotate-0"
           } transition-transform duration-200 `}
         >
-          <Image
-            src="/icons/chevron.svg"
-            alt="Chevron"
-            width={8.4}
-            height={4.2}
-          />
+          <Image src={CheveronIcon} alt="Chevron" width={8.4} height={4.2} />
         </div>
       </div>
     </div>
