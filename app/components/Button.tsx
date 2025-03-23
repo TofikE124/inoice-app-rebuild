@@ -1,9 +1,17 @@
 import { cva, VariantProps } from "class-variance-authority";
-import React, { ComponentProps } from "react";
+import React, { ComponentProps, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 const buttonStyles = cva(
-  ["px-6", "py-4", "rounded-3xl", "dark-transition", "heading-s"],
+  [
+    "px-6",
+    "py-4",
+    "rounded-3xl",
+    "dark-transition",
+    "heading-s",
+    "flex",
+    "items-center",
+  ],
   {
     variants: {
       variant: {},

@@ -10,18 +10,27 @@ type DropdownContextType = {
 
 export const DropdownContext = createContext<DropdownContextType | null>(null);
 
+type Size = "lg" | "md" | "sm";
+
 type DropdownRootProps = {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   children?: ReactNode;
+  size?: Size;
 };
 
-const DropdownRoot = ({ children }: DropdownRootProps) => {
+const DropdownRoot = ({ size = "lg", children }: DropdownRootProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string | null>(null);
 
+  const sizesMap: Record<Size, string> = {
+    lg: "w-[240px] md:w-[300px]",
+    md: "w-[200px] md:w-[240px]",
+    sm: "w-[100px] md:w-[150px] lg:w-[200px]",
+  };
+
   return (
-    <div className="relative">
+    <div className={`relative ${sizesMap[size]}`}>
       <DropdownContext.Provider value={{ open, setOpen, value, setValue }}>
         {children}
       </DropdownContext.Provider>

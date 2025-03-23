@@ -15,6 +15,12 @@ body {
   .shadow-primary {
     @apply shadow-[0px_10px_20px_0px] shadow-[#48549f40] dark:shadow-[#00000040];
   }
+
+  .box-container {
+    padding-inline: 1.5rem;
+    margin-inline: auto;
+    max-width: 70em;
+  }
 }
 
 body,

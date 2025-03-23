@@ -1,13 +1,15 @@
 import Image from "next/image";
 import React from "react";
 import { useDropdown } from "./useDropdown";
-import CheveronIcon from "/assets/chevron.svg";
+import CheveronIcon from "../../../public/assets/chevron.svg";
+import { twMerge } from "tailwind-merge";
 
 type DropdownTriggerProps = {
   placeholder: string;
+  className?: string;
 };
 
-const DropdownTrigger = ({ placeholder }: DropdownTriggerProps) => {
+const DropdownTrigger = ({ placeholder, className }: DropdownTriggerProps) => {
   const { setOpen, open, value } = useDropdown();
 
   return (
@@ -15,7 +17,10 @@ const DropdownTrigger = ({ placeholder }: DropdownTriggerProps) => {
       onClick={() => {
         setOpen(!open);
       }}
-      className="px-5 py-4 select-none dark-transition w-[240px] md:w-[300px] rounded-sm border border-pale-lavender hover:border-deep-purple bg-white dark:bg-slate-navy dark:border-midnight-slate cursor-pointer"
+      className={twMerge(
+        "px-5 py-4 select-none dark-transition w-full rounded-sm border border-pale-lavender hover:border-deep-purple bg-white dark:bg-slate-navy dark:border-midnight-slate cursor-pointer",
+        className
+      )}
     >
       <div className="flex justify-between items-center">
         <p className="text-rich-black dark:text-white heading-s-variant">
