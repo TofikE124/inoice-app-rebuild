@@ -12,8 +12,11 @@ body {
     @apply transition-colors  duration-200;
   }
 
-  .shadow-primary {
-    @apply shadow-[0px_10px_20px_0px] shadow-[#48549f40] dark:shadow-[#00000040];
+  .shadow-primary-25 {
+    @apply shadow-[0px_10px_20px_0px] shadow-[#48549F]/25 dark:shadow-[#000000]/25;
+  }
+  .shadow-primary-10 {
+    @apply shadow-[0px_10px_20px_0px] shadow-[#48549F]/10 dark:shadow-[#000000]/10;
   }
 
   .box-container {

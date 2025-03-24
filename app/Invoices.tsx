@@ -4,6 +4,7 @@ import DropdownTrigger from "./components/Dropdown/DropdownTrigger";
 import Button from "./components/Button";
 import PlusIcon from "../public/assets/icon-plus.svg";
 import Image from "next/image";
+import InvoiceSummary from "./components/InvoiceSummary";
 
 const Invoices = () => {
   return (
@@ -51,7 +52,28 @@ const Header = () => {
 };
 
 const IvoicesContent = () => {
-  return <div></div>;
+  return (
+    <div className="flex flex-col gap-4">
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+      <InvoiceSummary />
+    </div>
+  );
 };
 
 export default Invoices;

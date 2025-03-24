@@ -1,5 +1,6 @@
 "use client";
-import React, { createContext, ReactNode, useState } from "react";
+import useClickOutside from "@/app/hooks/useClickOutside";
+import React, { createContext, ReactNode, useRef, useState } from "react";
 
 type DropdownContextType = {
   open: boolean;
@@ -22,6 +23,7 @@ type DropdownRootProps = {
 const DropdownRoot = ({ size = "lg", children }: DropdownRootProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const sizesMap: Record<Size, string> = {
     lg: "w-[240px] md:w-[300px]",
@@ -29,8 +31,12 @@ const DropdownRoot = ({ size = "lg", children }: DropdownRootProps) => {
     sm: "w-[100px] md:w-[150px] lg:w-[200px]",
   };
 
+  useClickOutside(rootRef, () => {
+    setOpen(false);
+  });
+
   return (
-    <div className={`relative ${sizesMap[size]}`}>
+    <div ref={rootRef} className={`relative ${sizesMap[size]}`}>
       <DropdownContext.Provider value={{ open, setOpen, value, setValue }}>
         {children}
       </DropdownContext.Provider>

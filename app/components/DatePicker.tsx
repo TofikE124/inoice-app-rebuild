@@ -191,7 +191,7 @@ const DatePickerContent = () => {
           : "scale-[70%] opacity-0 invisible"
       } ${
         placement == PLACEMENT.ABOVE ? "bottom-full mb-4" : "top-full mt-4"
-      } absolute z-10 w-[240px] md:w-[300px] left-0 bg-white dark:bg-midnight-slate shadow-primary pt-6 pb-[30px] px-5 rounded-lg`}
+      } absolute z-10 w-[240px] md:w-[300px] left-0 bg-white dark:bg-midnight-slate shadow-primary-25 pt-6 pb-[30px] px-5 rounded-lg`}
     >
       <DatePickerHeader />
       <DatePickerDayPicker />

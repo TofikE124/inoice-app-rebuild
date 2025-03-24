@@ -11,6 +11,7 @@ const buttonStyles = cva(
     "heading-s",
     "flex",
     "items-center",
+    "cursor-pointer",
   ],
   {
     variants: {
