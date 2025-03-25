@@ -31,8 +31,14 @@ p,
 h1,
 h2,
 h3,
-h4 {
+h4,
+.react-loading-skeleton {
   @apply transition-colors  duration-200;
+}
+
+.dark .primary-loading-skeleton.react-loading-skeleton {
+  --base-color: #252945;
+  --highlight-color: #1d2037;
 }
 
 @theme {

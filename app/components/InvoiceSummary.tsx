@@ -1,16 +1,14 @@
-import { Invoice, Item } from "@prisma/client";
+import Image from "next/image";
+import RightArrowIcon from "../../public/assets/icon-arrow-right.svg";
 import { FullInvoice } from "../types/invoice";
 import InvoiceStatus from "./InvoiceStatus";
-import RightArrowIcon from "../../public/assets/icon-arrow-right.svg";
-import Image from "next/image";
+import { Item } from "@prisma/client";
 
 type InvoiceSummaryProps = {
-  invocie?: Invoice;
+  invoice: FullInvoice;
 };
 
-const InvoiceSummary = ({}: InvoiceSummaryProps) => {
-  const invoice: FullInvoice = dummyInvoice;
-
+const InvoiceSummary = ({ invoice }: InvoiceSummaryProps) => {
   return (
     <div className="rounded-lg p-6 dark-transition bg-white dark:bg-slate-navy shadow-primary-10 border border-deep-purple/0 hover:border-deep-purple">
       <div className="grid justify-between max-md:grid-cols-2 max-md:auto-rows-auto max-md:gap-y-2 md:grid-cols-[auto_auto_auto_1fr_auto_auto] md:gap-x-5 md:items-center">
@@ -59,50 +57,6 @@ const InvoiceSummary = ({}: InvoiceSummaryProps) => {
       </div>
     </div>
   );
-};
-
-const dummyInvoice: FullInvoice = {
-  id: "invoice_123",
-  billFromId: "location_1",
-  billToId: "location_2",
-  billFrom: {
-    id: "location_1",
-    name: "Sender Company",
-    email: "sender@example.com",
-    streetAdress: "123 Sender St",
-    city: "New York",
-    postCode: "10001",
-    country: "USA",
-  },
-  billTo: {
-    id: "location_2",
-    name: "Receiver Company",
-    email: "receiver@example.com",
-    streetAdress: "456 Receiver St",
-    city: "San Francisco",
-    postCode: "94103",
-    country: "USA",
-  },
-  invoiceDate: new Date("2025-04-01"),
-  paymentTerms: "NET_14_DAYS",
-  projectDescription: "Web development services for client project.",
-  status: "PENDING",
-  items: [
-    {
-      id: "item_1",
-      name: "Website Design",
-      quantity: 1,
-      price: 500.0,
-      invoiceId: "invoice_123",
-    },
-    {
-      id: "item_2",
-      name: "Hosting Fee",
-      quantity: 12,
-      price: 10.0,
-      invoiceId: "invoice_123",
-    },
-  ],
 };
 
 const getTotal = (items: Item[]) => {

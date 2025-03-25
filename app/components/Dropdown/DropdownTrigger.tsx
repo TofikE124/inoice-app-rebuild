@@ -6,17 +6,23 @@ import { twMerge } from "tailwind-merge";
 
 type DropdownTriggerProps = {
   placeholder: string;
+  disabled?: boolean;
   className?: string;
 };
 
-const DropdownTrigger = ({ placeholder, className }: DropdownTriggerProps) => {
+const DropdownTrigger = ({
+  placeholder,
+  disabled = false,
+  className,
+}: DropdownTriggerProps) => {
   const { setOpen, open, value } = useDropdown();
 
   return (
-    <div
+    <button
       onClick={() => {
         setOpen(!open);
       }}
+      disabled={disabled}
       className={twMerge(
         "px-5 py-4 select-none dark-transition w-full rounded-sm border border-pale-lavender hover:border-deep-purple bg-white dark:bg-slate-navy dark:border-midnight-slate cursor-pointer",
         className
@@ -34,7 +40,7 @@ const DropdownTrigger = ({ placeholder, className }: DropdownTriggerProps) => {
           <Image src={CheveronIcon} alt="Chevron" width={8.4} height={4.2} />
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
