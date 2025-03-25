@@ -61,9 +61,9 @@ model VerificationToken {
 model Invoice {
   id                 String       @id @default(uuid())
   billFromId         String       @unique
-  billFrom           Location     @relation("BillFrom", fields: [billFromId], references: [id])
+  billFrom           Location     @relation("BillFrom", fields: [billFromId], references: [id], onDelete: Cascade)
   billToId           String       @unique
-  billTo             Location     @relation("BillTo", fields: [billToId], references: [id])
+  billTo             Location     @relation("BillTo", fields: [billToId], references: [id], onDelete: Cascade)
   invoiceDate        DateTime
   paymentTerms       PaymentTerms
   projectDescription String       @db.Text
@@ -89,8 +89,8 @@ model Item {
   name      String
   quantity  Int
   price     Float
-  invoiceId String  @unique
-  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
 }
 
 enum PaymentTerms {

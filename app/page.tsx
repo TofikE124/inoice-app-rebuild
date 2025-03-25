@@ -3,6 +3,8 @@ import Sidebar from "./Sidebar";
 import Invoices from "./Invoices";
 
 export default function Home() {
+  console.log(new Date());
+
   return (
     <main className="min-h-screen pb-[150px] overflow-x-hidden bg-pale-ghost dark:bg-deep-space dark-transition">
       <Sidebar />

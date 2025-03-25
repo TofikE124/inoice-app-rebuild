@@ -17,7 +17,7 @@ const InvoiceSummary = ({}: InvoiceSummaryProps) => {
         <div className="md:mr-2 lg:mr-6">
           <h3 className="heading-s-variant text-rich-black dark:text-white uppercase">
             <span className="text-steel-blue">#</span>
-            rt3080
+            {invoice.id}
           </h3>
         </div>
 
