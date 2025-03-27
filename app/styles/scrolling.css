@@ -1,0 +1,38 @@
+::-webkit-scrollbar {
+  width: 1.5rem;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  margin-block: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 0.3rem solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 999999px;
+  background-color: var(--color-pale-lavender);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: var(--color-midnight-slate);
+}
+
+.main-scrollbar::-webkit-scrollbar-track {
+  margin-top: 72px;
+}
+
+@media (min-width: theme("screens.md")) {
+  .main-scrollbar::-webkit-scrollbar-track {
+    margin-top: 80px;
+  }
+}
+
+@media (min-width: theme("screens.lg")) {
+  .main-scrollbar::-webkit-scrollbar-track {
+    margin-block: 0.5rem;
+  }
+}

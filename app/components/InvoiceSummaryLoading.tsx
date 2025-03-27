@@ -3,7 +3,7 @@ import Skeleton from "@/app/components/Skeleton";
 
 const InvoiceSummaryLoading = () => {
   return (
-    <div className="rounded-lg p-6 dark-transition bg-white dark:bg-slate-navy shadow-primary-10 border border-deep-purple/0 hover:border-deep-purple">
+    <div className="rounded-lg p-6 dark-transition bg-white dark:bg-slate-navy shadow-primary-10 shadow-primary-placement border border-deep-purple/0 hover:border-deep-purple">
       <div className="grid justify-between max-md:grid-cols-2 max-md:auto-rows-auto max-md:gap-y-2 md:grid-cols-[auto_auto_auto_1fr_auto_auto] md:gap-x-5 md:items-center">
         <div className="md:mr-2 lg:mr-6">
           <Skeleton

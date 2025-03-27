@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 
 const Sidebar = () => {
   return (
-    <div className="fixed inset-x-0 dark-transition bg-charcoal-slate dark:bg-slate-navy flex justify-between lg:h-screen lg:w-fit lg:flex-col lg:rounded-r-[20px]">
+    <div className="fixed z-30 inset-x-0 dark-transition bg-charcoal-slate dark:bg-slate-navy flex justify-between lg:h-screen lg:w-fit lg:flex-col lg:rounded-r-[20px]">
       <SidebarIcon />
       <SidebarFooter />
     </div>

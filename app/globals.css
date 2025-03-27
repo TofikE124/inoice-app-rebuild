@@ -2,6 +2,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @import "./styles/base/typography.css";
+@import "./styles/scrolling.css";
 
 body {
   font-family: var(--font-league-spartan), sans-serif;
@@ -13,10 +14,14 @@ body {
   }
 
   .shadow-primary-25 {
-    @apply shadow-[0px_10px_20px_0px] shadow-[#48549F]/25 dark:shadow-[#000000]/25;
+    @apply shadow-[#48549F]/25 dark:shadow-[#000000]/25;
   }
   .shadow-primary-10 {
-    @apply shadow-[0px_10px_20px_0px] shadow-[#48549F]/10 dark:shadow-[#000000]/10;
+    @apply shadow-[#48549F]/10 dark:shadow-[#000000]/10;
+  }
+
+  .shadow-primary-placement {
+    @apply shadow-[0px_10px_20px_0px];
   }
 
   .box-container {

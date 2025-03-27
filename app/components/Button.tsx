@@ -9,8 +9,6 @@ const buttonStyles = cva(
     "rounded-3xl",
     "dark-transition",
     "heading-s",
-    "flex",
-    "items-center",
     "cursor-pointer",
   ],
   {
@@ -40,9 +38,7 @@ const buttonStyles = cva(
           "hover:bg-pale-lavender",
         ],
       },
-      size: { normal: ["max-w-[200px] max-h-[50px]"] },
     },
-    defaultVariants: { size: "normal" },
   }
 );
 

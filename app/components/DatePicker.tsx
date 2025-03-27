@@ -16,58 +16,6 @@ import useClickOutside from "../hooks/useClickOutside";
 import IconArrowLeft from "../svgs/IconArrowLeft";
 import IconArrowRight from "../svgs/IconArrowRight";
 
-// type MonthAbbreviation =
-//   | "Jan"
-//   | "Feb"
-//   | "Mar"
-//   | "Apr"
-//   | "May"
-//   | "Jun"
-//   | "Jul"
-//   | "Aug"
-//   | "Sep"
-//   | "Oct"
-//   | "Nov"
-//   | "Dec";
-
-// const monthAbbreviationArray: readonly MonthAbbreviation[] = [
-//   "Jan",
-//   "Feb",
-//   "Mar",
-//   "Apr",
-//   "May",
-//   "Jun",
-//   "Jul",
-//   "Aug",
-//   "Sep",
-//   "Oct",
-//   "Nov",
-//   "Dec",
-// ];
-
-// type Month = {
-//   name: string;
-//   days: number;
-//   index: number;
-// };
-
-// type MonthObject = Record<MonthAbbreviation, Month>;
-
-// const monthsObject: MonthObject = {
-//   Jan: { name: "January", days: 31, index: 0 },
-//   Feb: { name: "February", days: 28, index: 1 },
-//   Mar: { name: "March", days: 31, index: 2 },
-//   Apr: { name: "April", days: 30, index: 3 },
-//   May: { name: "May", days: 31, index: 4 },
-//   Jun: { name: "June", days: 30, index: 5 },
-//   Jul: { name: "July", days: 31, index: 6 },
-//   Aug: { name: "August", days: 31, index: 7 },
-//   Sep: { name: "September", days: 30, index: 8 },
-//   Oct: { name: "October", days: 31, index: 9 },
-//   Nov: { name: "November", days: 30, index: 10 },
-//   Dec: { name: "December", days: 31, index: 11 },
-// };
-
 enum PLACEMENT {
   ABOVE,
   BELOW,
@@ -94,6 +42,7 @@ const useDatePickerContext = () => {
 };
 
 type DatePickerProps = {
+  label?: string;
   defaultValue?: Date;
   onValueChange?: (newDate: Date) => void;
   minDate?: Date;
@@ -101,6 +50,7 @@ type DatePickerProps = {
 };
 
 const DatePicker = ({
+  label,
   defaultValue,
   onValueChange = () => {},
   minDate,
@@ -119,7 +69,7 @@ const DatePicker = ({
   });
 
   const openDatePicker = () => {
-    const dropdownHeight = 330; // Example height
+    const dropdownHeight = 150;
     setPlacement(getDropdownPosition(datePickerRef.current!, dropdownHeight));
     setOpen(true);
   };
@@ -156,10 +106,23 @@ const DatePicker = ({
           triggerDatePicker,
         }}
       >
+        {label ? <DatePickerLabel label={label} /> : null}
         <DatePickerTrigger />
         <DatePickerContent />
       </DatePickerContext.Provider>
     </div>
+  );
+};
+
+type DatePickerLabelProps = {
+  label: string;
+};
+
+const DatePickerLabel = ({ label }: DatePickerLabelProps) => {
+  return (
+    <p className="mb-2 body-variant tracking-[-0.1px] text-steel-blue dark:text-pale-lavender">
+      {label}
+    </p>
   );
 };
 
@@ -170,7 +133,7 @@ const DatePickerTrigger = () => {
   return (
     <div
       onClick={triggerDatePicker}
-      className="w-[240px] md:w-[300px] py-4 px-5 dark-transition flex justify-between items-center cursor-pointer rounded-sm bg-white dark:bg-slate-navy border border-pale-lavender dark:border-midnight-slate hover:border-deep-purple focus:border-deep-purple"
+      className="py-4 px-5 dark-transition flex justify-between items-center cursor-pointer rounded-sm bg-white dark:bg-slate-navy border border-pale-lavender dark:border-midnight-slate hover:border-deep-purple focus:border-deep-purple"
     >
       <p className="heading-s-variant dark-transition text-rich-black dark:text-white">
         {formatedDate}
@@ -191,7 +154,7 @@ const DatePickerContent = () => {
           : "scale-[70%] opacity-0 invisible"
       } ${
         placement == PLACEMENT.ABOVE ? "bottom-full mb-4" : "top-full mt-4"
-      } absolute z-10 w-[240px] md:w-[300px] left-0 bg-white dark:bg-midnight-slate shadow-primary-25 pt-6 pb-[30px] px-5 rounded-lg`}
+      } absolute z-10 w-[240px] md:w-[300px] left-0 bg-white dark:bg-midnight-slate shadow-primary-25 shadow-primary-placement pt-6 pb-[30px] px-5 rounded-lg`}
     >
       <DatePickerHeader />
       <DatePickerDayPicker />

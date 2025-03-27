@@ -97,7 +97,7 @@ enum PaymentTerms {
   NET_1_DAY
   NET_7_DAYS
   NET_14_DAYS
-  NET_30_DAY
+  NET_30_DAYS
 }
 
 enum Status {
