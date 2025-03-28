@@ -1,4 +1,3 @@
-import delay from "delay";
 import Invoices from "./Invoices";
 
 export default async function Page() {

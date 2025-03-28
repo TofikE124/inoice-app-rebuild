@@ -3,6 +3,7 @@ import { Status } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dropdown } from "../components/Dropdown";
 import { getFilterByStatus } from "../helper/getFilterByStatus";
+import { statusMap } from "../helper/statusMap";
 
 interface FilterByStatusProps {
   disabled?: boolean;
@@ -10,11 +11,6 @@ interface FilterByStatusProps {
 
 const FilterByStatus = ({ disabled = false }: FilterByStatusProps) => {
   const statusArr = Object.values(Status);
-  const statusMap: Record<Status, { label: string }> = {
-    PENDING: { label: "Pending" },
-    DRAFT: { label: "Draft" },
-    PAID: { label: "Paid" },
-  };
   const router = useRouter();
   const searchParams = useSearchParams();
   const filterByStatus = getFilterByStatus(searchParams.get("filterByStatus"));

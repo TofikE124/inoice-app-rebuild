@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import SidebarRectangle from "../..π/public/assets/sidebar-rectangle.svg";
+import SidebarRectangle from "../../public/assets/sidebar-rectangle.svg";
 import Logo from "../../public/assets/logo.svg";
 import Avatar from "../../public/assets/image-avatar.jpg";
 import MoonIcon from "../../public/assets/icon-moon.svg";
