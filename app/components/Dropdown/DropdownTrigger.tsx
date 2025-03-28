@@ -15,32 +15,46 @@ const DropdownTrigger = ({
   disabled = false,
   className,
 }: DropdownTriggerProps) => {
-  const { setOpen, open, value } = useDropdown();
+  const { setOpen, open, value, errorMessage } = useDropdown();
 
   return (
-    <button
-      onClick={() => {
-        setOpen(!open);
-      }}
-      disabled={disabled}
-      className={twMerge(
-        "px-5 py-4 select-none dark-transition w-full rounded-sm border border-pale-lavender hover:border-deep-purple bg-white dark:bg-slate-navy dark:border-midnight-slate cursor-pointer",
-        className
-      )}
-    >
-      <div className="flex justify-between items-center">
-        <p className="text-rich-black dark:text-white heading-s-variant">
-          {value || placeholder}
-        </p>
-        <div
-          className={`${
-            open ? "rotate-180" : "rotate-0"
-          } transition-transform duration-200 `}
-        >
-          <Image src={CheveronIcon} alt="Chevron" width={8.4} height={4.2} />
+    <div className="space-y-2">
+      <button
+        onClick={() => {
+          setOpen(!open);
+        }}
+        disabled={disabled}
+        className={twMerge(
+          `${
+            errorMessage
+              ? "border-red-500"
+              : "border-pale-lavender hover:border-deep-purple dark:border-midnight-slate"
+          } px-5 py-4 select-none dark-transition w-full rounded-sm border bg-white dark:bg-slate-navy cursor-pointer`,
+          className
+        )}
+        type="button"
+      >
+        <div className="flex justify-between items-center">
+          <p
+            className={`${
+              errorMessage ? "text-red-500" : "text-rich-black dark:text-white"
+            } heading-s-variant`}
+          >
+            {value || placeholder}
+          </p>
+          <div
+            className={`${
+              open ? "rotate-180" : "rotate-0"
+            } transition-transform duration-200 `}
+          >
+            <Image src={CheveronIcon} alt="Chevron" width={8.4} height={4.2} />
+          </div>
         </div>
-      </div>
-    </button>
+      </button>
+      {errorMessage ? (
+        <p className="body-variant text-red-500">{errorMessage}</p>
+      ) : null}
+    </div>
   );
 };
 

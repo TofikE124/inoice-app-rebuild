@@ -9,6 +9,8 @@ import React, {
 } from "react";
 
 type DropdownContextType = {
+  errorMessage?: string;
+  required?: boolean;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   value: string | null;
@@ -20,21 +22,26 @@ export const DropdownContext = createContext<DropdownContextType | null>(null);
 type Size = "lg" | "md" | "sm";
 
 type DropdownRootProps = {
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
+  errorMessage?: string;
+  required?: boolean;
+  defaultValue?: string | null;
+  onValueChange?: (value: string | null) => void;
   children?: ReactNode;
   size?: Size;
 };
 
 const DropdownRoot = ({
+  errorMessage,
+  required,
   defaultValue,
-  onValueChange,
+  onValueChange = () => {},
   size,
   children,
 }: DropdownRootProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string | null>(defaultValue || null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const [firstTime, setFirstTime] = useState(true);
 
   const sizesMap: Record<Size, string> = {
     lg: "w-[240px] md:w-[300px]",
@@ -47,12 +54,18 @@ const DropdownRoot = ({
   });
 
   useEffect(() => {
-    if (value && onValueChange) onValueChange(value);
+    if (firstTime) {
+      setFirstTime(false);
+      return;
+    }
+    onValueChange(value);
   }, [value]);
 
   return (
     <div ref={rootRef} className={`relative ${size ? sizesMap[size] : ""}`}>
-      <DropdownContext.Provider value={{ open, setOpen, value, setValue }}>
+      <DropdownContext.Provider
+        value={{ errorMessage, required, open, setOpen, value, setValue }}
+      >
         {children}
       </DropdownContext.Provider>
     </div>

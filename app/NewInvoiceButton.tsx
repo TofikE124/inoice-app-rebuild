@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PlusIcon from "../public/assets/icon-plus.svg";
 import Button from "./components/Button";
 import InvoiceForm from "./components/InvoiceForm";

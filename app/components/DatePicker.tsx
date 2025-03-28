@@ -44,12 +44,14 @@ const useDatePickerContext = () => {
 type DatePickerProps = {
   label?: string;
   defaultValue?: Date;
+  errorMessage?: string;
   onValueChange?: (newDate: Date) => void;
   minDate?: Date;
   maxDate?: Date;
 };
 
 const DatePicker = ({
+  errorMessage,
   label,
   defaultValue,
   onValueChange = () => {},
@@ -107,6 +109,7 @@ const DatePicker = ({
         }}
       >
         {label ? <DatePickerLabel label={label} /> : null}
+        <DatePickerErrorMessage errorMessage={errorMessage} />
         <DatePickerTrigger />
         <DatePickerContent />
       </DatePickerContext.Provider>
@@ -116,6 +119,19 @@ const DatePicker = ({
 
 type DatePickerLabelProps = {
   label: string;
+};
+
+const DatePickerErrorMessage = ({
+  errorMessage,
+}: {
+  errorMessage?: string;
+}) => {
+  if (!errorMessage) return;
+  return (
+    <div className="">
+      <p className="body-variant text-red-500">{errorMessage}</p>
+    </div>
+  );
 };
 
 const DatePickerLabel = ({ label }: DatePickerLabelProps) => {
