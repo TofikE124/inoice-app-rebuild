@@ -1,13 +1,13 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import InvoiceSummary from "./components/InvoiceSummary";
+import InvoiceSummary from "../components/InvoiceSummary";
 import FilterByStatus from "./FilterByStatus";
 import NewInvoiceButton from "./NewInvoiceButton";
-import { FullInvoice } from "./types/invoice";
+import { FullInvoice } from "../types/invoice";
 import InvoicesLoading from "./InvoicesLoading";
 import { useSearchParams } from "next/navigation";
-import { getFilterByStatus } from "./helper/getFilterByStatus";
+import { getFilterByStatus } from "../helper/getFilterByStatus";
 
 const Invoices = () => {
   const urlSearchParams = useSearchParams();

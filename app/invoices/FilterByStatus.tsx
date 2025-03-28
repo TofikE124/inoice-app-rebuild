@@ -1,8 +1,8 @@
 "use client";
 import { Status } from "@prisma/client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Dropdown } from "./components/Dropdown";
-import { getFilterByStatus } from "./helper/getFilterByStatus";
+import { Dropdown } from "../components/Dropdown";
+import { getFilterByStatus } from "../helper/getFilterByStatus";
 
 interface FilterByStatusProps {
   disabled?: boolean;

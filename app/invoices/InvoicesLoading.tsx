@@ -1,5 +1,5 @@
 import Skeleton from "@/app/components/Skeleton";
-import InvoiceSummaryLoading from "./components/InvoiceSummaryLoading";
+import InvoiceSummaryLoading from "../components/InvoiceSummaryLoading";
 import FilterByStatus from "./FilterByStatus";
 import NewInvoiceButton from "./NewInvoiceButton";
 
