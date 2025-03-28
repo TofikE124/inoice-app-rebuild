@@ -1,8 +1,8 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PaymentTerms } from "@prisma/client";
+import { PaymentTerms, Status } from "@prisma/client";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormProvider,
   SubmitHandler,
@@ -10,7 +10,7 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { number, z } from "zod";
+import { z } from "zod";
 import LeftArrowIcon from "../../public/assets/icon-arrow-left.svg";
 import DeleteIcon from "../../public/assets/icon-delete.svg";
 import { invoiceSchema } from "../schemas/invoiceSchema";
@@ -18,6 +18,11 @@ import Button from "./Button";
 import DatePicker from "./DatePicker";
 import { Dropdown } from "./Dropdown";
 import TextField from "./TextField";
+import axios from "axios";
+import toast from "react-hot-toast";
+import delay from "delay";
+import { useTheme } from "next-themes";
+import { getToastDefaultStyle } from "../toast/getToastDefaultStyle";
 
 type InvoiceFormProps = {
   isOpen?: boolean;
@@ -33,24 +38,91 @@ const InvoiceForm = ({
   const methods = useForm<FormFields>({
     resolver: zodResolver(invoiceSchema),
     mode: "onSubmit",
+    defaultValues: {
+      streetAdressFrom: "123",
+      cityFrom: "123",
+      postCodeFrom: "123",
+      countryFrom: "123",
+      clientNameTo: "123",
+      clientEmailTo: "123@gmail.com",
+      streetAdressTo: "123",
+      cityTo: "123",
+      postCodeTo: "123",
+      countryTo: "123",
+      date: "2025-03-28T17:43:52.246Z",
+      paymentTerms: "NET_1_DAY",
+      projectDescription: "123",
+      items: [
+        {
+          name: "item name",
+          quantity: 1,
+          price: 1,
+        },
+      ],
+    },
   });
 
   const {
     handleSubmit,
+    reset,
     formState: { errors },
   } = methods;
+  const { theme } = useTheme();
+  const [isLoading, setLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<FormFields> = (
+  const sendInvoice = async (data: any) => {
+    await delay(2000);
+    return axios.post("/api/invoice", { ...data, status: Status.PENDING });
+  };
+
+  const closeForm = () => {
+    onClose();
+    setLoading(false);
+    reset();
+  };
+
+  const onSubmit: SubmitHandler<FormFields> = async (
     data: FormFields,
     event?: React.BaseSyntheticEvent
   ) => {
     const e = event as { nativeEvent: { submitter: { name: string } } };
     const submitter = e?.nativeEvent.submitter.name;
     if (submitter == "save-send") {
-      console.log("send");
+      setLoading(true);
+
+      toast
+        .promise(
+          sendInvoice(data),
+          {
+            loading: "Sending Invoice",
+            success: <b>Invoice Sent</b>,
+            error: <b>An Error Occurred</b>,
+          },
+          {
+            style: getToastDefaultStyle(theme),
+          }
+        )
+        .finally(() => {
+          closeForm();
+        });
     }
     if (submitter == "save-draft") {
-      console.log("draft");
+      setLoading(true);
+      toast
+        .promise(
+          axios.post("/api/invoice", { ...data, status: Status.PENDING }),
+          {
+            loading: "Sending Invoice as Draft",
+            success: <b>Invoice Sent as Draft</b>,
+            error: <b>An Error Occurred</b>,
+          },
+          {
+            style: getToastDefaultStyle(theme),
+          }
+        )
+        .finally(() => {
+          closeForm();
+        });
     }
   };
 
@@ -97,7 +169,7 @@ const InvoiceForm = ({
             <div className="mt-[70px]">
               <InvoiceFormItemList />
             </div>
-            <InvoiceFormFooter onClose={onClose} />
+            <InvoiceFormFooter onClose={onClose} isLoading={isLoading} />
           </div>
         </form>
       </FormProvider>
@@ -330,19 +402,35 @@ const InvoiceFormItemList = () => {
 
 type InvoiceFormFooterProps = {
   onClose?: () => void;
+  isLoading: boolean;
 };
 
-const InvoiceFormFooter = ({ onClose }: InvoiceFormFooterProps) => {
+const InvoiceFormFooter = ({ onClose, isLoading }: InvoiceFormFooterProps) => {
   return (
     <div className="max-md:fixed left-0 right-0 bottom-0 z-20">
       <div className="relative bg-white dark:bg-slate-navy md:bg-transparent dark:md:bg-transparent flex items-center gap-2 max-md:px-6 max-md:py-6 md:mt-[55px] md:mb-8">
-        <Button color="primary" className="mr-auto" onClick={onClose}>
+        <Button
+          color="primary"
+          className="mr-auto"
+          onClick={onClose}
+          disabled={isLoading}
+        >
           Discard
         </Button>
-        <Button type="submit" name="save-draft" color="secondary">
+        <Button
+          type="submit"
+          name="save-draft"
+          color="secondary"
+          disabled={isLoading}
+        >
           Save as Draft
         </Button>
-        <Button type="submit" name="save-send" color="deepPurple">
+        <Button
+          type="submit"
+          name="save-send"
+          color="deepPurple"
+          disabled={isLoading}
+        >
           Save & Send
         </Button>
         <div className="md:hidden absolute left-0 right-0 transition-all duration-200 pointer-events-none bottom-full bg-gradient-to-b from-transparent to-black/10 h-[64px]"></div>

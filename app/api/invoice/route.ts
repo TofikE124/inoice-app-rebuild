@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       invoiceDate: body.date,
       paymentTerms: body.paymentTerms as PaymentTerms,
       projectDescription: body.projectDescription,
-      status: Status.PENDING,
+      status: (body.status || Status.PENDING) as Status,
     },
   });
 

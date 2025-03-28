@@ -7,9 +7,12 @@ const buttonStyles = cva(
     "px-6",
     "py-4",
     "rounded-3xl",
-    "dark-transition",
+    "transition-all",
+    "duration-200",
     "heading-s",
     "cursor-pointer",
+    "disabled:cursor-not-allowed",
+    "disabled:opacity-60",
   ],
   {
     variants: {

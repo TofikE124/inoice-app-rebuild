@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { League_Spartan } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "./providers/ThemeProvider";
+import { Toaster } from "react-hot-toast";
 
 const leagueSpartan = League_Spartan({
   variable: "--font-league-spartan",
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${leagueSpartan.variable} antialiased`}>
+        <Toaster toastOptions={{ className: "backgroind-red-500" }} />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

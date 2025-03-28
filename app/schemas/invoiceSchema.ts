@@ -1,8 +1,9 @@
-import { PaymentTerms } from "@prisma/client";
+import { PaymentTerms, Status } from "@prisma/client";
 import { z } from "zod";
 import { itemSchema } from "./itemSchema";
 
-const statusEnum = Object.values(PaymentTerms) as [string, ...string[]];
+const paymentTermsEnum = Object.values(PaymentTerms) as [string, ...string[]];
+const statusEnum = Object.values(Status) as [string, ...string[]];
 
 const requiredMessage = "This Field Is Required";
 
@@ -21,7 +22,7 @@ export const invoiceSchema = z.object({
 
   date: z.string().datetime({ precision: 3 }),
   paymentTerms: z
-    .enum(statusEnum, {
+    .enum(paymentTermsEnum, {
       required_error: requiredMessage,
     })
     .nullable()
@@ -30,4 +31,5 @@ export const invoiceSchema = z.object({
     }),
   projectDescription: z.string().min(1, requiredMessage).max(255),
   items: z.array(itemSchema),
+  status: z.enum(statusEnum, { required_error: requiredMessage }).optional(),
 });
