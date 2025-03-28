@@ -3,6 +3,7 @@ import { League_Spartan } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "./providers/ThemeProvider";
 import { Toaster } from "react-hot-toast";
+import QueryClientProvider from "./providers/QueryClientProvider";
 
 const leagueSpartan = League_Spartan({
   variable: "--font-league-spartan",
@@ -24,7 +25,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${leagueSpartan.variable} antialiased`}>
         <Toaster toastOptions={{ className: "backgroind-red-500" }} />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <QueryClientProvider>{children}</QueryClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

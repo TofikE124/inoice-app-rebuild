@@ -6,6 +6,13 @@ import { z } from "zod";
 
 type InvoiceSchemaType = z.infer<typeof invoiceSchema>;
 
+export async function GET(request: NextResponse) {
+  const invoices = await prisma.invoice.findMany({
+    include: { billFrom: true, billTo: true, items: true },
+  });
+  return NextResponse.json(invoices, { status: 200 });
+}
+
 export async function POST(request: NextRequest) {
   const body = (await request.json()) as InvoiceSchemaType;
 

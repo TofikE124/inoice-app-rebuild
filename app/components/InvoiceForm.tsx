@@ -23,6 +23,7 @@ import toast from "react-hot-toast";
 import delay from "delay";
 import { useTheme } from "next-themes";
 import { getToastDefaultStyle } from "../toast/getToastDefaultStyle";
+import { useQueryClient } from "@tanstack/react-query";
 
 type InvoiceFormProps = {
   isOpen?: boolean;
@@ -69,10 +70,12 @@ const InvoiceForm = ({
   } = methods;
   const { theme } = useTheme();
   const [isLoading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const sendInvoice = async (data: any) => {
     await delay(2000);
-    return axios.post("/api/invoice", { ...data, status: Status.PENDING });
+    await axios.post("/api/invoice", { ...data, status: Status.PENDING });
+    queryClient.refetchQueries({ queryKey: ["invoices"] });
   };
 
   const closeForm = () => {
@@ -125,10 +128,6 @@ const InvoiceForm = ({
         });
     }
   };
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   return (
     <>
@@ -356,12 +355,10 @@ const InvoiceFormProjectDescription = () => {
 
 const InvoiceFormItemList = () => {
   const { control } = useFormContext<FormFields>();
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control,
-      name: "items",
-    }
-  );
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "items",
+  });
 
   return (
     <>

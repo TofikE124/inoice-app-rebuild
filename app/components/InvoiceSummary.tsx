@@ -9,13 +9,15 @@ type InvoiceSummaryProps = {
 };
 
 const InvoiceSummary = ({ invoice }: InvoiceSummaryProps) => {
+  const date = new Date(invoice.invoiceDate);
+
   return (
     <div className="rounded-lg p-6 dark-transition bg-white dark:bg-slate-navy shadow-primary-10 shadow-primary-placement border border-deep-purple/0 hover:border-deep-purple">
       <div className="grid justify-between max-md:grid-cols-2 max-md:auto-rows-auto max-md:gap-y-2 md:grid-cols-[auto_auto_auto_1fr_auto_auto] md:gap-x-5 md:items-center">
         <div className="md:mr-2 lg:mr-6">
           <h3 className="heading-s-variant text-rich-black dark:text-white uppercase">
             <span className="text-steel-blue">#</span>
-            {invoice.id}
+            {invoice.id.slice(0, 5)}
           </h3>
         </div>
 
@@ -30,7 +32,7 @@ const InvoiceSummary = ({ invoice }: InvoiceSummaryProps) => {
             <span className="text-cool-gray dark:text-pale-lavender mr-2">
               Due
             </span>
-            {invoice.invoiceDate.toLocaleDateString("en-GB", {
+            {date.toLocaleDateString("en-GB", {
               day: "2-digit",
               month: "short",
               year: "numeric",

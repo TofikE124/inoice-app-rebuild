@@ -24,7 +24,9 @@ const TextField = ({
             : "text-steel-blue dark:text-pale-lavender"
         } body-variant tracking-[-0.1px] flex items-center`}
       >
-        {required ? <div className="heading-s text-red-500 mr-1">*</div> : null}
+        {required ? (
+          <span className="heading-s text-red-500 mr-1">*</span>
+        ) : null}
         {label}
       </p>
       <input
