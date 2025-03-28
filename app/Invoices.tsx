@@ -5,20 +5,41 @@ import InvoiceSummary from "./components/InvoiceSummary";
 import FilterByStatus from "./FilterByStatus";
 import NewInvoiceButton from "./NewInvoiceButton";
 import { FullInvoice } from "./types/invoice";
+import InvoicesLoading from "./InvoicesLoading";
+import { useSearchParams } from "next/navigation";
+import { getFilterByStatus } from "./helper/getFilterByStatus";
 
 const Invoices = () => {
-  const { data: invoices, error } = useQuery<FullInvoice[]>({
+  const urlSearchParams = useSearchParams();
+  const filterByStatus = getFilterByStatus(
+    urlSearchParams.get("filterByStatus")
+  );
+
+  const {
+    data: invoices,
+    error,
+    isLoading,
+  } = useQuery<FullInvoice[]>({
     queryKey: ["invoices"],
     queryFn: () => axios.get("/api/invoice").then((res) => res.data),
   });
 
+  const filteredInvoices = filterByStatus
+    ? invoices?.filter((invoice) => invoice.status == filterByStatus)
+    : invoices;
+
   if (error) return null;
-  if (!invoices) return null;
 
   return (
     <div className="flex flex-col gap-8 md:gap-[55px] lg:gap-16">
-      <Header invoices={invoices} />
-      <IvoicesContent invoices={invoices} />
+      {filteredInvoices ? (
+        <>
+          <Header invoices={filteredInvoices} />
+          <IvoicesContent invoices={filteredInvoices} />
+        </>
+      ) : isLoading ? (
+        <InvoicesLoading />
+      ) : null}
     </div>
   );
 };
