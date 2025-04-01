@@ -1,0 +1,47 @@
+.invoiceDetailsGrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  row-gap: 30px;
+  column-gap: 60px;
+  grid-template-areas:
+    "id ."
+    "billFrom ."
+    "invoiceDate billTo"
+    "paymentDue billTo"
+    "sentTo .";
+}
+
+@media (min-width: theme("screens.md")) {
+  .invoiceDetailsGrid {
+    grid-template-columns: fit-content fit-content fit-content fit-content;
+    justify-content: space-between;
+    grid-template-areas:
+      "id . . billFrom"
+      "invoiceDate billTo sentTo ."
+      "paymentDue billTo . .";
+  }
+}
+
+.grid-in-id {
+  grid-area: id;
+}
+
+.grid-in-billFrom {
+  grid-area: billFrom;
+}
+
+.grid-in-invoiceDate {
+  grid-area: invoiceDate;
+}
+
+.grid-in-billTo {
+  grid-area: billTo;
+}
+
+.grid-in-paymentDue {
+  grid-area: paymentDue;
+}
+
+.grid-in-sentTo {
+  grid-area: sentTo;
+}

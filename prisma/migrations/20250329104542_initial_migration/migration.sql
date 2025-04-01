@@ -55,9 +55,11 @@ CREATE TABLE `Invoice` (
     `billFromId` VARCHAR(191) NOT NULL,
     `billToId` VARCHAR(191) NOT NULL,
     `invoiceDate` DATETIME(3) NOT NULL,
-    `paymentTerms` ENUM('NET_1_DAY', 'NET_7_DAYS', 'NET_14_DAYS', 'NET_30_DAY') NOT NULL,
+    `paymentTerms` ENUM('NET_1_DAY', 'NET_7_DAYS', 'NET_14_DAYS', 'NET_30_DAYS') NOT NULL,
     `projectDescription` TEXT NOT NULL,
     `status` ENUM('PAID', 'PENDING', 'DRAFT') NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Invoice_billFromId_key`(`billFromId`),
     UNIQUE INDEX `Invoice_billToId_key`(`billToId`),
@@ -73,6 +75,8 @@ CREATE TABLE `Location` (
     `city` VARCHAR(191) NOT NULL,
     `postCode` VARCHAR(191) NOT NULL,
     `country` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -84,6 +88,8 @@ CREATE TABLE `Item` (
     `quantity` INTEGER NOT NULL,
     `price` DOUBLE NOT NULL,
     `invoiceId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -95,10 +101,10 @@ ALTER TABLE `accounts` ADD CONSTRAINT `accounts_user_id_fkey` FOREIGN KEY (`user
 ALTER TABLE `sessions` ADD CONSTRAINT `sessions_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Invoice` ADD CONSTRAINT `Invoice_billFromId_fkey` FOREIGN KEY (`billFromId`) REFERENCES `Location`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Invoice` ADD CONSTRAINT `Invoice_billFromId_fkey` FOREIGN KEY (`billFromId`) REFERENCES `Location`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Invoice` ADD CONSTRAINT `Invoice_billToId_fkey` FOREIGN KEY (`billToId`) REFERENCES `Location`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Invoice` ADD CONSTRAINT `Invoice_billToId_fkey` FOREIGN KEY (`billToId`) REFERENCES `Location`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Item` ADD CONSTRAINT `Item_invoiceId_fkey` FOREIGN KEY (`invoiceId`) REFERENCES `Invoice`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Item` ADD CONSTRAINT `Item_invoiceId_fkey` FOREIGN KEY (`invoiceId`) REFERENCES `Invoice`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

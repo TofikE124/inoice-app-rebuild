@@ -39,8 +39,6 @@ const IvoicesContentLoading = () => {
       <InvoiceSummaryLoading />
       <InvoiceSummaryLoading />
       <InvoiceSummaryLoading />
-      <InvoiceSummaryLoading />
-      <InvoiceSummaryLoading />
     </div>
   );
 };

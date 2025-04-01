@@ -105,6 +105,9 @@ const InvoiceForm = ({
             style: getToastDefaultStyle(theme),
           }
         )
+        .catch((err) => {
+          console.log(err);
+        })
         .finally(() => {
           closeForm();
         });
@@ -173,18 +176,37 @@ const InvoiceForm = ({
         </form>
       </FormProvider>
 
-      <InvoiceFormBlackOverlay onClose={onClose} isOpen={isOpen} />
+      <InvoiceFormBlackOverlay
+        disabled={isLoading}
+        onClose={onClose}
+        isOpen={isOpen}
+      />
     </>
   );
 };
 
-const InvoiceFormBlackOverlay = ({ onClose, isOpen }: InvoiceFormProps) => {
+type InvoiceFormBlackOverlayProps = {
+  isOpen?: boolean;
+  onClose?: () => void;
+  disabled?: boolean;
+};
+
+const InvoiceFormBlackOverlay = ({
+  onClose = () => {},
+  isOpen,
+  disabled,
+}: InvoiceFormBlackOverlayProps) => {
+  const handleClick = () => {
+    if (disabled) return;
+    onClose();
+  };
+
   return (
     <div
       className={`fixed ${
         isOpen ? "opacity-100 visible" : "opacity-0 invisible"
       } transition-all duration-500 z-10 inset-0 bg-black/50`}
-      onClick={onClose}
+      onClick={handleClick}
     ></div>
   );
 };

@@ -15,6 +15,7 @@ import DatepickerIcon from "../../public/assets/datepicker.svg";
 import useClickOutside from "../hooks/useClickOutside";
 import IconArrowLeft from "../svgs/IconArrowLeft";
 import IconArrowRight from "../svgs/IconArrowRight";
+import { formatDate } from "../helper/formateDate";
 
 enum PLACEMENT {
   ABOVE,
@@ -309,14 +310,6 @@ const DatePickerDayItem = ({
       </p>
     </div>
   );
-};
-
-const formatDate = (date: Date) => {
-  return date.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
 };
 
 const getDropdownPosition = (

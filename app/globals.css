@@ -4,6 +4,7 @@
 @import "./styles/base/typography.css";
 @import "./styles/scrolling.css";
 @import "./styles/base/resets.css";
+@import "./styles/utilities/invoiceDetailsGrid.css";
 
 body {
   font-family: var(--font-league-spartan), sans-serif;
@@ -15,12 +16,18 @@ h1,
 h2,
 h3,
 h4,
+a,
 .react-loading-skeleton {
   @apply transition-colors  duration-200;
 }
 
 .dark .primary-loading-skeleton.react-loading-skeleton {
   --base-color: #252945;
+  --highlight-color: #1d2037;
+}
+
+.dark .secondary-loading-skeleton.react-loading-skeleton {
+  --base-color: #1b1d33;
   --highlight-color: #1d2037;
 }
 

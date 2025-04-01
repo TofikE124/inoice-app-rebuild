@@ -3,6 +3,7 @@ import RightArrowIcon from "../../public/assets/icon-arrow-right.svg";
 import { FullInvoice } from "../types/invoice";
 import InvoiceStatus from "./InvoiceStatus";
 import { Item } from "@prisma/client";
+import Link from "next/link";
 
 type InvoiceSummaryProps = {
   invoice: FullInvoice;
@@ -52,9 +53,9 @@ const InvoiceSummary = ({ invoice }: InvoiceSummaryProps) => {
           <InvoiceStatus status={invoice.status} />
         </div>
         <div className="max-md:hidden">
-          <button className="cursor-pointer p-2">
+          <Link href={`/invoices/${invoice.id}`} className="cursor-pointer p-2">
             <Image src={RightArrowIcon} alt="Right Arrow" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>
