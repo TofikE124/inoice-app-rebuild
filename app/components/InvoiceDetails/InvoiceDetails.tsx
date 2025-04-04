@@ -5,7 +5,7 @@ import { FullInvoice } from "../../types/invoice";
 import InvoiceStatus from "../InvoiceStatus";
 import Button from "../Button";
 import { formatDate } from "../../helper/formateDate";
-import { Location, PaymentTerms } from "@prisma/client";
+import { Item, Location, PaymentTerms } from "@prisma/client";
 import { addDays } from "date-fns";
 import { toTitleCase } from "../../helper/toTitleCase";
 
@@ -23,7 +23,7 @@ const InvoiceDetails = ({ invoice }: InvoiceDetailsProps) => {
       <div className="flex flex-col gap-4">
         <InvoiceDetailsHeader invoice={invoice} />
         <div className="bg-white dark:bg-slate-navy rounded-lg p-6 shadow-primary-10 shadow-primary-placement">
-          <div className={"invoiceDetailsGrid"}>
+          <div className="invoiceDetailsGrid">
             {/* Id and Description */}
             <InvoiceIdAndDescription
               id={invoice.id}
@@ -55,60 +55,40 @@ const InvoiceDetails = ({ invoice }: InvoiceDetailsProps) => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="heading-s text-rich-black dark:text-white text-start">
-                      Banner Design
-                    </td>
-                    <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
-                      1
-                    </td>
-                    <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
-                      £ 156.00
-                    </td>
-                    <td className="heading-s text-rich-black dark:text-pale-lavender text-center">
-                      £ 156.00
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="heading-s text-rich-black dark:text-white text-start">
-                      Banner Design
-                    </td>
-                    <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
-                      1
-                    </td>
-                    <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
-                      £ 156.00
-                    </td>
-                    <td className="heading-s text-rich-black dark:text-pale-lavender text-center">
-                      £ 156.00
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="heading-s text-rich-black dark:text-white text-start">
-                      Banner Design
-                    </td>
-                    <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
-                      1
-                    </td>
-                    <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
-                      £ 156.00
-                    </td>
-                    <td className="heading-s text-rich-black dark:text-pale-lavender text-center">
-                      £ 156.00
-                    </td>
-                  </tr>
+                  {invoice.items.map((item) => (
+                    <tr key={item.id}>
+                      <td className="heading-s text-rich-black dark:text-white text-start">
+                        {item.name}
+                      </td>
+                      <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
+                        {item.quantity}
+                      </td>
+                      <td className="heading-s text-steel-blue dark:text-pale-lavender text-center">
+                        £ {item.price}
+                      </td>
+                      <td className="heading-s text-rich-black dark:text-pale-lavender text-center">
+                        £ {item.quantity * item.price}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
             <div className="rounded-b-lg px-6 py-8 flex items-center justify-between bg-charcoal-slate dark:bg-rich-black">
               <p className="body-variant text-white">Grand Total</p>
-              <h2 className="heading-m text-white ">£ 556.00</h2>
+              <h2 className="heading-m text-white ">
+                £ {getItemsTotal(invoice.items)}
+              </h2>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+const getItemsTotal = (items: Item[]) => {
+  return items.reduce((prev, item) => prev + item.quantity * item.price, 0);
 };
 
 // InvoiceIdAndDescription component

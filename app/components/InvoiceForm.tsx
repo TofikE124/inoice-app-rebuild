@@ -39,28 +39,28 @@ const InvoiceForm = ({
   const methods = useForm<FormFields>({
     resolver: zodResolver(invoiceSchema),
     mode: "onSubmit",
-    defaultValues: {
-      streetAdressFrom: "123",
-      cityFrom: "123",
-      postCodeFrom: "123",
-      countryFrom: "123",
-      clientNameTo: "123",
-      clientEmailTo: "123@gmail.com",
-      streetAdressTo: "123",
-      cityTo: "123",
-      postCodeTo: "123",
-      countryTo: "123",
-      date: "2025-03-28T17:43:52.246Z",
-      paymentTerms: "NET_1_DAY",
-      projectDescription: "123",
-      items: [
-        {
-          name: "item name",
-          quantity: 1,
-          price: 1,
-        },
-      ],
-    },
+    // defaultValues: {
+    //   streetAdressFrom: "123",
+    //   cityFrom: "123",
+    //   postCodeFrom: "123",
+    //   countryFrom: "123",
+    //   clientNameTo: "123",
+    //   clientEmailTo: "123@gmail.com",
+    //   streetAdressTo: "123",
+    //   cityTo: "123",
+    //   postCodeTo: "123",
+    //   countryTo: "123",
+    //   date: "2025-03-28T17:43:52.246Z",
+    //   paymentTerms: "NET_1_DAY",
+    //   projectDescription: "123",
+    //   items: [
+    //     {
+    //       name: "item name",
+    //       quantity: 1,
+    //       price: 1,
+    //     },
+    //   ],
+    // },
   });
 
   const {
@@ -204,7 +204,9 @@ const InvoiceFormBlackOverlay = ({
   return (
     <div
       className={`fixed ${
-        isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        isOpen
+          ? "opacity-100 visible"
+          : "opacity-0 invisible pointer-events-none"
       } transition-all duration-500 z-10 inset-0 bg-black/50`}
       onClick={handleClick}
     ></div>
