@@ -8,6 +8,8 @@ import { formatDate } from "../../helper/formateDate";
 import { Item, Location, PaymentTerms } from "@prisma/client";
 import { addDays } from "date-fns";
 import { toTitleCase } from "../../helper/toTitleCase";
+import { useState } from "react";
+import InvoiceForm from "../InvoiceForm";
 
 // InvoiceDetails component
 type InvoiceDetailsProps = {
@@ -230,9 +232,7 @@ const InvoiceDetailsHeader = ({ invoice }: { invoice: FullInvoice }) => (
     </p>
     <InvoiceStatus status={invoice.status} />
     <div className="max-md:fixed bottom-0 left-0 right-0 max-md:shadow-primary-10 max-md:shadow-[0px_10px_10px_-10px] max-md:bg-white max-md:dark:bg-slate-navy max-md:px-6 max-md:py-5 flex gap-2 max-md:justify-around md:justify-between items-center md:ml-auto">
-      <Button color="primary" className="max-md:w-full">
-        Edit
-      </Button>
+      <EditInvoice invoice={invoice} />
       <Button color="red" className="max-md:w-full">
         Delete
       </Button>
@@ -242,6 +242,31 @@ const InvoiceDetailsHeader = ({ invoice }: { invoice: FullInvoice }) => (
     </div>
   </div>
 );
+
+type EditInvoiceDetails = {
+  invoice: FullInvoice;
+};
+
+const EditInvoice = ({ invoice }: EditInvoiceDetails) => {
+  const [isOpen, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        color="primary"
+        className="max-md:w-full"
+        onClick={() => setOpen(true)}
+      >
+        Edit
+      </Button>
+      <InvoiceForm
+        invoice={invoice}
+        isOpen={isOpen}
+        onClose={() => setOpen(false)}
+      />
+    </>
+  );
+};
 
 // Calculate Payment Due Date
 const calculatePaymentDue = (date: Date, paymentTerm: PaymentTerms) => {

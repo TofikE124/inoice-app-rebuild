@@ -20,8 +20,6 @@ const Sidebar = () => {
 };
 
 const SidebarIcon = () => {
-  const { data, status } = useSession();
-
   return (
     <div className="relative size-[72px] md:size-[80px] lg:size-[103px] grid place-content-center">
       <Image
@@ -62,7 +60,7 @@ const SidebarFooter = () => {
 };
 
 const Avatar = () => {
-  const { data, status } = useSession();
+  const { data: session, status } = useSession();
   if (status == "loading")
     return (
       <div className="flex flex-col items-center gap-4">
@@ -94,9 +92,9 @@ const Avatar = () => {
   return (
     <div className="flex lg:flex-col md:place-items-center gap-2 md:gap-4">
       <div className="ml-2 pr-2 group relative">
-        {data?.user?.image ? (
+        {session?.user?.image ? (
           <Image
-            src={data?.user?.image as string}
+            src={session?.user?.image as string}
             width={32}
             height={32}
             alt="avatar"
@@ -113,10 +111,10 @@ const Avatar = () => {
         )}
         <div className="absolute left-full top-1/2 -translate-y-1/2 bg-midnight-slate px-4 py-2 rounded-lg duration-200 transition-all translate-x-[-30px] opacity-0 scale-[80%] invisible group-hover:translate-x-0 group-hover:opacity-100 group-hover:visible group-hover:scale-100">
           <h3 className="heading-s text-white text-center">
-            {data.user?.email}
+            {session?.user?.email}
           </h3>
           <h3 className="body-variant text-white text-center">
-            {data.user?.name}
+            {session?.user?.name}
           </h3>
         </div>
       </div>

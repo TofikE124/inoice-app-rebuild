@@ -1,6 +1,9 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PaymentTerms, Status } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
@@ -10,24 +13,22 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import LeftArrowIcon from "../../public/assets/icon-arrow-left.svg";
 import DeleteIcon from "../../public/assets/icon-delete.svg";
 import { invoiceSchema } from "../schemas/invoiceSchema";
+import { getToastDefaultStyle } from "../toast/getToastDefaultStyle";
+import { FullInvoice } from "../types/invoice";
 import Button from "./Button";
 import DatePicker from "./DatePicker";
 import { Dropdown } from "./Dropdown";
 import TextField from "./TextField";
-import axios from "axios";
-import toast from "react-hot-toast";
-import delay from "delay";
-import { useTheme } from "next-themes";
-import { getToastDefaultStyle } from "../toast/getToastDefaultStyle";
-import { useQueryClient } from "@tanstack/react-query";
 
 type InvoiceFormProps = {
   isOpen?: boolean;
   onClose?: () => void;
+  invoice?: FullInvoice;
 };
 
 type FormFields = z.infer<typeof invoiceSchema>;
@@ -35,47 +36,56 @@ type FormFields = z.infer<typeof invoiceSchema>;
 const InvoiceForm = ({
   isOpen = false,
   onClose = () => {},
+  invoice,
 }: InvoiceFormProps) => {
   const methods = useForm<FormFields>({
     resolver: zodResolver(invoiceSchema),
     mode: "onSubmit",
-    // defaultValues: {
-    //   streetAdressFrom: "123",
-    //   cityFrom: "123",
-    //   postCodeFrom: "123",
-    //   countryFrom: "123",
-    //   clientNameTo: "123",
-    //   clientEmailTo: "123@gmail.com",
-    //   streetAdressTo: "123",
-    //   cityTo: "123",
-    //   postCodeTo: "123",
-    //   countryTo: "123",
-    //   date: "2025-03-28T17:43:52.246Z",
-    //   paymentTerms: "NET_1_DAY",
-    //   projectDescription: "123",
-    //   items: [
-    //     {
-    //       name: "item name",
-    //       quantity: 1,
-    //       price: 1,
-    //     },
-    //   ],
-    // },
   });
 
-  const {
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = methods;
+  useEffect(() => {
+    if (invoice) {
+      const { setValue } = methods;
+
+      // Set form values one by one
+      setValue("streetAdressFrom", invoice?.billFrom.streetAdress ?? "");
+      setValue("cityFrom", invoice?.billFrom.city ?? "");
+      setValue("postCodeFrom", invoice?.billFrom.postCode ?? "");
+      setValue("countryFrom", invoice?.billFrom.country ?? "");
+
+      setValue("clientNameTo", invoice?.billTo.name ?? "");
+      setValue("clientEmailTo", invoice?.billTo.email ?? "");
+      setValue("streetAdressTo", invoice?.billTo.streetAdress ?? "");
+      setValue("cityTo", invoice?.billTo.city ?? "");
+      setValue("postCodeTo", invoice?.billTo.postCode ?? "");
+      setValue("countryTo", invoice?.billTo.country ?? "");
+
+      setValue(
+        "date",
+        invoice.invoiceDate
+          ? new Date(invoice?.invoiceDate).toISOString()
+          : new Date().toISOString()
+      );
+      setValue("paymentTerms", invoice?.paymentTerms);
+      setValue("projectDescription", invoice?.projectDescription ?? "");
+      setValue("status", invoice?.status ?? "");
+      setValue("items", invoice?.items ?? []);
+    }
+  }, [isOpen, invoice, methods]);
+
+  const { handleSubmit, reset } = methods;
   const { theme } = useTheme();
   const [isLoading, setLoading] = useState(false);
   const queryClient = useQueryClient();
 
   const sendInvoice = async (data: any) => {
-    await delay(2000);
     await axios.post("/api/invoice", { ...data, status: Status.PENDING });
     queryClient.refetchQueries({ queryKey: ["invoices"] });
+  };
+
+  const editInvoice = async (data: any) => {
+    await axios.patch(`/api/invoice/${invoice?.id}`, data);
+    queryClient.refetchQueries({ queryKey: ["invoices", invoice?.id] });
   };
 
   const closeForm = () => {
@@ -93,24 +103,45 @@ const InvoiceForm = ({
     if (submitter == "save-send") {
       setLoading(true);
 
-      toast
-        .promise(
-          sendInvoice(data),
-          {
-            loading: "Sending Invoice",
-            success: <b>Invoice Sent</b>,
-            error: <b>An Error Occurred</b>,
-          },
-          {
-            style: getToastDefaultStyle(theme),
-          }
-        )
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          closeForm();
-        });
+      if (invoice) {
+        toast
+          .promise(
+            editInvoice(data),
+            {
+              loading: "Editing Invoice",
+              success: <b>Invoice Edited</b>,
+              error: <b>An Error Occurred</b>,
+            },
+            {
+              style: getToastDefaultStyle(theme),
+            }
+          )
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            closeForm();
+          });
+      } else {
+        toast
+          .promise(
+            sendInvoice(data),
+            {
+              loading: "Sending Invoice",
+              success: <b>Invoice Sent</b>,
+              error: <b>An Error Occurred</b>,
+            },
+            {
+              style: getToastDefaultStyle(theme),
+            }
+          )
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            closeForm();
+          });
+      }
     }
     if (submitter == "save-draft") {
       setLoading(true);
@@ -153,7 +184,14 @@ const InvoiceForm = ({
             </button>
 
             <h1 className="max-md:mt-[26px] heading-m text-rich-black dark:text-white">
-              New Invoice
+              {invoice ? (
+                <>
+                  Edit <span className="text-steel-blue">#</span>
+                  {invoice.id.slice(0, 5).toUpperCase()}
+                </>
+              ) : (
+                "New Invoice"
+              )}
             </h1>
             <div className="grid grid-cols-2 gap-6 mt-[22px]">
               <InvoiceFormBillFrom />
@@ -171,7 +209,11 @@ const InvoiceForm = ({
             <div className="mt-[70px]">
               <InvoiceFormItemList />
             </div>
-            <InvoiceFormFooter onClose={onClose} isLoading={isLoading} />
+            <InvoiceFormFooter
+              invoice={invoice}
+              onClose={onClose}
+              isLoading={isLoading}
+            />
           </div>
         </form>
       </FormProvider>
@@ -309,6 +351,7 @@ const InvoicePaymentTerms = () => {
   const {
     setValue,
     formState: { errors },
+    getValues,
   } = useFormContext<FormFields>();
 
   const paymentTermsMap: Record<PaymentTerms, { label: string }> = {
@@ -322,7 +365,7 @@ const InvoicePaymentTerms = () => {
     <Dropdown.Root
       required
       errorMessage={errors.paymentTerms?.message}
-      defaultValue={undefined}
+      value={getValues("paymentTerms")}
       onValueChange={(value) => {
         setValue("paymentTerms", value as PaymentTerms, {
           shouldValidate: true,
@@ -422,37 +465,45 @@ const InvoiceFormItemList = () => {
 };
 
 type InvoiceFormFooterProps = {
+  invoice?: FullInvoice;
   onClose?: () => void;
   isLoading: boolean;
 };
 
-const InvoiceFormFooter = ({ onClose, isLoading }: InvoiceFormFooterProps) => {
+const InvoiceFormFooter = ({
+  invoice,
+  onClose,
+  isLoading,
+}: InvoiceFormFooterProps) => {
   return (
     <div className="max-md:fixed left-0 right-0 bottom-0 z-20">
       <div className="relative bg-white dark:bg-slate-navy md:bg-transparent dark:md:bg-transparent flex items-center gap-2 max-md:px-6 max-md:py-6 md:mt-[55px] md:mb-8">
         <Button
           color="primary"
-          className="mr-auto"
+          className={invoice ? "ml-auto" : "mr-auto"}
           onClick={onClose}
           disabled={isLoading}
         >
-          Discard
+          {invoice ? "Cancel" : "Discard"}
         </Button>
-        <Button
-          type="submit"
-          name="save-draft"
-          color="secondary"
-          disabled={isLoading}
-        >
-          Save as Draft
-        </Button>
+        {invoice ? null : (
+          <Button
+            type="submit"
+            name="save-draft"
+            color="secondary"
+            disabled={isLoading}
+          >
+            Save as Draft
+          </Button>
+        )}
+
         <Button
           type="submit"
           name="save-send"
           color="deepPurple"
           disabled={isLoading}
         >
-          Save & Send
+          {invoice ? "Save Changes" : "Save & Send"}
         </Button>
         <div className="md:hidden absolute left-0 right-0 transition-all duration-200 pointer-events-none bottom-full bg-gradient-to-b from-transparent to-black/10 h-[64px]"></div>
       </div>
@@ -477,7 +528,7 @@ const Item = ({ index, onRemove = () => {} }: ItemProps) => {
   const price = watch(`items.${index}.price`);
 
   useEffect(() => {
-    setValue(`items.${index}.quantity`, parseInt(quantity.toString()) || 0);
+    setValue(`items.${index}.quantity`, parseInt(quantity?.toString()) || 0);
     setValue(`items.${index}.price`, Number(price) || 0);
   }, [price, quantity]);
 

@@ -24,6 +24,7 @@ type Size = "lg" | "md" | "sm";
 type DropdownRootProps = {
   errorMessage?: string;
   required?: boolean;
+  value?: string | null;
   defaultValue?: string | null;
   onValueChange?: (value: string | null) => void;
   children?: ReactNode;
@@ -34,12 +35,15 @@ const DropdownRoot = ({
   errorMessage,
   required,
   defaultValue,
+  value,
   onValueChange = () => {},
   size,
   children,
 }: DropdownRootProps) => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string | null>(defaultValue || null);
+  const [selectedValue, setValue] = useState<string | null>(
+    defaultValue || null
+  );
   const rootRef = useRef<HTMLDivElement>(null);
   const [firstTime, setFirstTime] = useState(true);
 
@@ -58,13 +62,26 @@ const DropdownRoot = ({
       setFirstTime(false);
       return;
     }
-    onValueChange(value);
+    onValueChange(selectedValue);
+  }, [selectedValue]);
+
+  useEffect(() => {
+    if (typeof value == "undefined") return;
+
+    setValue(value);
   }, [value]);
 
   return (
     <div ref={rootRef} className={`relative ${size ? sizesMap[size] : ""}`}>
       <DropdownContext.Provider
-        value={{ errorMessage, required, open, setOpen, value, setValue }}
+        value={{
+          errorMessage,
+          required,
+          open,
+          setOpen,
+          value: selectedValue,
+          setValue,
+        }}
       >
         {children}
       </DropdownContext.Provider>
